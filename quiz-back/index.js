@@ -1,12 +1,11 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
+import multer from 'multer';
 import mongoose from 'mongoose';
 import { registerValidation } from './validations/auth.js';
-import { validationResult } from 'express-validator';
-import userModel from './models/user.js';
-import bcrypt from 'bcrypt';
 import checkAuth from './utils/checkAuth.js';
 import * as userController from './controllers/userController.js';
+import * as quizContoller from './controllers/quizContoller.js';
+import * as categoryController from './controllers/categoryControllers.js';
 
 mongoose
     .connect(
@@ -17,14 +16,28 @@ mongoose
 
 const app = express();
 
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
 app.use(express.json());
 
 app.post('/auth/login', userController.login);
-
 app.post('/auth/register', registerValidation, userController.register);
-
 app.get('/auth/user', checkAuth, userController.getUser);
-
+app.post('/categories', categoryController.createCat);
+app.get('/quizzes', quizContoller.getAll);
+app.get('/quizzes/:id', quizContoller.getById);
+app.post('/quizzes', checkAuth, quizContoller.createQuiz);
+app.delete('/quizzes/:id', checkAuth, quizContoller.remove);
+// app.patch('/quizzes', quizContoller.update); TODO
 app.get('/', (req, res) => {
     res.send('All ok!');
 });
