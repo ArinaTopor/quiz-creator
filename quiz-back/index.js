@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import { registerValidation } from './validations/auth.js';
@@ -15,7 +16,10 @@ mongoose
     .catch((err) => console.log(err));
 
 const app = express();
-
+const corsOptions = {
+    origin: 'http://localhost:4200',
+};
+app.use(cors(corsOptions));
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
         cb(null, 'uploads');

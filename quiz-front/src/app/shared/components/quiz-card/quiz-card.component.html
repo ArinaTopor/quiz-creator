@@ -1,1 +1,6 @@
-<p>quiz-card works!</p>
+<div *ngIf="quizz">
+  <img alt="image" />
+  <h1>{{ quizz.title }}</h1>
+  <p>{{ quizz.category.name }}</p>
+  <p>{{ quizz.user.first_name }} {{ quizz.user.last_name }}</p>
+</div>

@@ -3,12 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { QuizCardComponent } from './shared/components/quiz-card/quiz-card.component';
+import { provideHttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, QuizCardComponent],
-  imports: [BrowserModule, AppRoutingModule],
-  providers: [],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, CommonModule],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
